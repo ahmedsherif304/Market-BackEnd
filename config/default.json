@@ -1,0 +1,10 @@
+{
+    "name": "my express app-development",
+    "jwtPrivateKey" : "",
+    "password" : "",
+    "saltLength" : "",
+    "dbString" : "mongodb://localhost",
+    "mail" :{
+        "host":"dev-mail-server"
+    }
+}

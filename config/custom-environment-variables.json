@@ -1,0 +1,5 @@
+{
+    "password":"app_password",
+    "jwtPrivateKey" : "Market_jwtPrivateKey",
+    "saltLength" : "saltLength"
+}
