@@ -9,13 +9,8 @@ const idSchema = new mongoose.schema({
         type:String,
         minlength:1,
         trim:true
-    }
-    ,
-    shopName :{
-        type:String,
-        minlength:1,
-        trim:true
-    }
+    },
+    shopName :String
 })
 const productSchema = new mongoose.Schema({
     id: {
@@ -35,10 +30,6 @@ const productSchema = new mongoose.Schema({
         min:0,
         max:5
     },
-    numberOfRates:{
-        Type:Number,
-        default:0
-    },
     discount:{
         Type:Number,
         min:0,
@@ -48,13 +39,10 @@ const productSchema = new mongoose.Schema({
     category: Category    
 });
 
-userSchema.methods.generateAuthToken = function ()
-{
-    return jwt.sign({_id:this._id,isAdmin:this.isAdmin},config.get('jwtPrivateKey'));
-}
-const User = mongoose.model('User',userSchema);
 
-function validateUser (user)
+const Product = mongoose.model('Product',productSchema);
+
+function validateProduct (product)
 {
     
     const schema = {
@@ -62,9 +50,9 @@ function validateUser (user)
         email : Joi.string().required().email(),
         password :Joi.string().required().min(8).max(255)
     };
-    return  Joi.validate(user,schema) ;
+    return  Joi.validate(product,schema) ;
 }
 
 
-exports.User = User;
-exports.validate = validateUser;
+exports.Product = Product;
+exports.validate = validateProduct;
