@@ -3,7 +3,7 @@
     "jwtPrivateKey" : "",
     "password" : "",
     "saltLength" : "",
-    "dbString" : "mongodb://localhost",
+    "dbString" : "mongodb://localhost/market",
     "mail" :{
         "host":"dev-mail-server"
     }

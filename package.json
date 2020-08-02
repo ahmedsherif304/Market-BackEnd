@@ -15,12 +15,14 @@
     "config": "^3.3.1",
     "debug": "^4.1.1",
     "express": "^4.17.1",
+    "fawn": "^2.1.5",
     "joi": "^14.3.1",
     "joi-password-complexity": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.19",
     "mongoose": "^5.9.20",
     "morgan": "^1.10.0",
-    "winston": "^3.3.3"
+    "winston": "^2.4.0",
+    "winston-mongodb": "^3.0.0"
   }
 }

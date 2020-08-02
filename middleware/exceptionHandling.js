@@ -1,4 +1,4 @@
-
+const winston = require('winston');
 
 module.exports = function (handler)
 {
@@ -9,6 +9,7 @@ module.exports = function (handler)
             }
             catch(err)
             {
+                winston.error(err.message,err);
                 res.status(500).send(err.message);
             }
             
