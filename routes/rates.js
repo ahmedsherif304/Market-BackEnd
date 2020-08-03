@@ -19,19 +19,19 @@ router.get('/:id',exceptionHandler(async (req,res)=>{
     res.send(rates);
 }));
 
-router.post('/:productId/:userId',[auth,productBuyer],exceptionHandler(async (req,res)=>{
+router.post('/:productId',[auth,productBuyer],exceptionHandler(async (req,res)=>{
     const {error} = validateRate(req.body);
     if (error)  res.status(400).send(error.details[0].message);
     const product = await Product.findById(req.params.productId);
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.params.userToken._id);
     if (!user || !product)  return res.status(400).send('invalid product or user id');
 
     const rate = await Rate.find({product:{id:req.params.productId}});
     const users = rate.user;
-    if (users.indexOf(req.params.userId)!=-1)   return res.send(400).send('you cannot rate the same product twice');
+    if (users.indexOf(req.params.userToken._id)!=-1)   return res.send(400).send('you cannot rate the same product twice');
     else 
     {
-        const user = await User.findById(req.params.userId);
+        const user = await User.findById(req.params.userToken._id);
         const product = await Product.findById(req.params.productId); 
         const newRate = new Rate({
             product:{
@@ -54,11 +54,12 @@ router.post('/:productId/:userId',[auth,productBuyer],exceptionHandler(async (re
     
 }));
 
-router.put('/:productId/:userId',[auth,productBuyer],exceptionHandler(async (req,res)=>{
+
+router.put('/:productId',[auth,productBuyer],exceptionHandler(async (req,res)=>{
     const {error} = validateRate(req.body);
     if (error)  res.status(400).send(error.details[0].message);
     const product = await Product.findById(req.params.productId);
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.userToken._id);
     if (!user || !product)  return res.status(400).send('invalid product or user id');
 
     const oldTotalRate = product.rate;
@@ -72,7 +73,7 @@ router.put('/:productId/:userId',[auth,productBuyer],exceptionHandler(async (req
             id:req.params.productId
        },
        user:{
-           id:req.params.userId
+           id:req.params.userToken._id
        }
     })
     const newRate = ((oldTotalRate*numberOfRates - oldRate)*(numberOfRates-1)+req.body.rate)/numberOfRates;
@@ -82,7 +83,7 @@ router.put('/:productId/:userId',[auth,productBuyer],exceptionHandler(async (req
                 id:req.params.productId
             },
             user:{
-                id:req.params.userId
+                id:req.params.userToken._id
             }
         },{
             comment:req.body.comment,

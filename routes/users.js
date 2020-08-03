@@ -11,7 +11,7 @@ const Joi = require('joi');
 
 
 router.get('/:id',auth,exceptionHandling( async (req,res)=>{
-    let user = await User.find({_id:req.params.id},{_id:0,__v:0,isAdmin:0});
+    let user = await User.find({_id:req.params.userToken._id},{_id:0,__v:0,isAdmin:0});
     res.send(user);
 }));
 
@@ -19,7 +19,7 @@ router.put('/username/:id',auth,exceptionHandling( async (req,res)=>{
     const {error} =  validateUsername(req.body);
     if (error)  return    res.status(400).send(error.details[0].message);
 
-    await User.updateOne({_id:req.params.id},{name:req.body.username});
+    await User.updateOne({_id:req.params.userToken._id},{name:req.body.username});
     
     res.send(true); 
 }));
@@ -28,7 +28,7 @@ router.put('/password/:id',auth,exceptionHandling( async (req,res)=>{
     const {error} =  validateUpdatePassword(req.body);
     if (error)  return    res.status(400).send(error.details[0].message);
     
-    let user = await User.findOne({_id:req.params.id});
+    let user = await User.findOne({_id:req.params.userToken._id});
     const validPassword = await bcrypt.compare(req.body.oldPassword,user.password);
     if (!validPassword) return   res.status(400).send('The old password is incorrect');
 

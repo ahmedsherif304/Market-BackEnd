@@ -19,7 +19,7 @@ const rateSchema = new mongoose.Schema({
             ref:'User'
         },
         name:String,
-    },
+    }
 });
 
 

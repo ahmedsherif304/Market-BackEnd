@@ -40,7 +40,13 @@ const productSchema = new mongoose.Schema({
         type:Category,
         required:true
     },
-    image:String  
+    image:String,
+    details:String,
+    amount:{
+        type:Number,
+        required:true,
+        min:0
+    }
 });
 
 
@@ -57,8 +63,9 @@ function validateProduct (product)
         discount:Joi.number().min(0).max(100),
         image:Joi.string().required(),
         shopName:Joi.string().required(),
-        categoryName:Joi.string().required()
-
+        categoryName:Joi.string().required(),
+        amount:Joi.number().min(1),
+        details:Joi.String().require()
     };
     return  Joi.validate(product,schema) ;
 }

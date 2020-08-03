@@ -20,10 +20,10 @@ router.get('/',[auth,admin],exceptionHandling( async (req,res)=>{
   res.send(shops);
 }));
 
-router.get('/:userId',auth,exceptionHandling(async (req,res)=>{
+router.get('/',auth,exceptionHandling(async (req,res)=>{
     const shops = await Shop.find({
         owner:{
-            id:req.params.userId
+            id:req.params.userToken._id
         }});
     res.send(shops);
 }));
@@ -73,6 +73,7 @@ router.delete('/:id',[auth,shopOwner],exceptionHandling( async (req,res)=>{
     task.run();
     res.send(true);
 }));
+
 
 router.put('/:id',[auth,shopOwner],exceptionHandling( async (req,res)=>{
     let shop = await Shop.findOne({name:req.body.shopName});

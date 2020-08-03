@@ -45,7 +45,9 @@ router.post('/:shopId',[auth,shopOwner],exceptionHandler(async (req,res)=>{
             colors:req.body.colors,
             sizes:req.body.sizes,
             category:category,
-            image:req.body,image
+            image:req.body,image,
+            amount:req.body.amount,
+            details:req.body.details
         }
     );
     await product.save();
@@ -69,6 +71,8 @@ router.put('/:productId',[auth,shopOwner],exceptionHandler(async (req,res)=>{
     product.sizes = req.body.sizes;
     product.category = category;
     product.image = req.body.image;
+    product.amount = req.body.amount;
+    product.details = req.body.details;
     
     await product.save();
     res.send(product);
