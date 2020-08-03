@@ -19,7 +19,7 @@ function validateCategory (category)
 {
     
     const schema = {
-        name : Joi.string().required().min(1).max(255)
+        categoryName : Joi.string().required().min(1).max(255)
     };
     return  Joi.validate(category,schema) ;
 }

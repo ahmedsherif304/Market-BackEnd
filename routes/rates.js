@@ -10,7 +10,10 @@ const mongoose = require('mongoose');
 const Fawn = require('fawn');
 const _ = require('lodash');
 Fawn.init(mongoose);
+
 router.get('/:id',exceptionHandler(async (req,res)=>{
+    const product = await Product.findById(id);
+    if (!product) return res.status(400).send('invalid product id');
     const rates = await Rate.find({product:{id:req.params.id}});
     rates.reverse();
     res.send(rates);
@@ -19,6 +22,9 @@ router.get('/:id',exceptionHandler(async (req,res)=>{
 router.post('/:productId/:userId',[auth,productBuyer],exceptionHandler(async (req,res)=>{
     const {error} = validateRate(req.body);
     if (error)  res.status(400).send(error.details[0].message);
+    const product = await Product.findById(req.params.productId);
+    const user = await User.findById(req.params.userId);
+    if (!user || !product)  return res.status(400).send('invalid product or user id');
 
     const rate = await Rate.find({product:{id:req.params.productId}});
     const users = rate.user;
@@ -51,7 +57,11 @@ router.post('/:productId/:userId',[auth,productBuyer],exceptionHandler(async (re
 router.put('/:productId/:userId',[auth,productBuyer],exceptionHandler(async (req,res)=>{
     const {error} = validateRate(req.body);
     if (error)  res.status(400).send(error.details[0].message);
-    const oldTotalRate = await Product.findById(req.params.productId).rate;
+    const product = await Product.findById(req.params.productId);
+    const user = await User.findById(req.params.userId);
+    if (!user || !product)  return res.status(400).send('invalid product or user id');
+
+    const oldTotalRate = product.rate;
     const numberOfRates = await Rate.find({
         product:{
             id:req.params.productId

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Category,validate} = require('../models/category');
+const {Product} = require('../models/product');
 const exceptionHandling = require('../middleware/exceptionHandling');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
@@ -8,9 +9,16 @@ const _ = require ('lodash');
 const Joi = require('joi');
 
 
-router.get('/',[auth,admin],exceptionHandling( async (req,res)=>{
+router.get('/',exceptionHandling( async (req,res)=>{
   const categories  = await Category.find().sort('name');
   res.send(categories);
+}));
+
+router.get('/categoryId/products',exceptionHandling(async (req,res)=>{
+     const category = await Category.findById(req.params.categoryId);
+     if (!category)    res.status(400).send('there is no such a category');
+    const products = await Product.find({category:category});
+    res.send(products);
 }));
 
 router.post('/',[auth,admin],exceptionHandling( async (req,res)=>{
@@ -21,14 +29,14 @@ router.post('/',[auth,admin],exceptionHandling( async (req,res)=>{
      res.send(category);
 }));
 
-router.delete('/',[auth,admin],exceptionHandling( async (req,res)=>{
+router.delete('/:id',[auth,admin],exceptionHandling( async (req,res)=>{
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    await Category.deleteOne({name:req.body.name});
+    await Category.deleteOne({name:req.body.categoryName});
     res.send(true);
 }));
 
-router.put('/',[auth,admin],exceptionHandling( async (req,res)=>{
+router.put('/:id',[auth,admin],exceptionHandling( async (req,res)=>{
     const {error} = validateUpdate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 

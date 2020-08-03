@@ -19,7 +19,7 @@ router.put('/username/:id',auth,exceptionHandling( async (req,res)=>{
     const {error} =  validateUsername(req.body);
     if (error)  return    res.status(400).send(error.details[0].message);
 
-    await User.updateOne({_id:req.params.id},{name:req.body.name});
+    await User.updateOne({_id:req.params.id},{name:req.body.username});
     
     res.send(true); 
 }));
@@ -44,7 +44,7 @@ router.put('/password/:id',auth,exceptionHandling( async (req,res)=>{
 function validateUsername(user)
 {
     const schema={
-        name:Joi.string().required().min(1).max(255)
+        username:Joi.string().required().min(1).max(255)
     };
     return  Joi.validate(user,schema) ;
 }

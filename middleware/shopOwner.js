@@ -7,7 +7,7 @@ module.exports = async function (req,res,next)
         const {error} = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
         const token = req.userToken;
-        const shop = await Shop.findOne({name:req.body.name});
+        const shop = await Shop.findOne({name:req.body.shopName});
         if (!shop)  return res.status(400).send('the shop name is invalid')
         if (shop.owner.id != token._id)     return res.status(403).send('you are not the owner of this shop');   
         next();

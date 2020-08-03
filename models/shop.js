@@ -44,7 +44,7 @@ function validateShop (shop)
 {
     
     const schema = {
-        name : Joi.string().required().min(1).max(255),
+        shopName : Joi.string().required().min(1).max(255),
         phone: Joi.string().length(11),
         address : Joi.string()
     };
