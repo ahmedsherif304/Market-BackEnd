@@ -13,6 +13,8 @@ const category  = require('./routes/categories');
 const shop = require('./routes/shops');
 const rate = require('./routes/rates')
 const product = require('./routes/products')
+const favourite = require('./routes/favourites')
+const cart = require('./routes/carts')
 const app = express();
 
 app.use(express.json());
@@ -24,6 +26,8 @@ app.use('/category',category);
 app.use('/shop',shop);
 app.use('/rate',rate);
 app.use('/product',product);
+app.use('/cart',cart);
+app.use('/favourite',favourite);
 
 
 process.on('unhandledRejection',(ex)=>{
