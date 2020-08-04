@@ -6,6 +6,9 @@ const exceptionHandling = require('../middleware/exceptionHandling');
 const auth = require('../middleware/auth');
 const Joi = require('joi');
 const _ = require('lodash');
+const Fawn = require('fawn');
+const mongoose = require('mongoose');
+Fawn.init(mongoose);
 
 router.get('/',auth,exceptionHandling( async (req,res)=>{
     const cart = await Cart.findOne({userId:userToken._id});
@@ -21,6 +24,11 @@ router.put('/:productId',auth,exceptionHandling( async (req,res)=>{
 
     const cart = await Cart.findOne({userId:userToken._id});
     cart.products.push({id:req.params.productId,amount:req.body.amount});
+    product.amount -= req.body.amount;
+    const task = Fawn.Task();
+    task.save('Cart',cart);
+    task.save('Product',product);
+    task.run();
     res.send(cart);
 }));
 
@@ -28,8 +36,13 @@ router.delete('/:productId',auth,exceptionHandling( async (req,res)=>{
     let product = await Product.findById(req.params.productId);
     if (!product)   return res.status(400).send('invalid product id');
     const cart = await Cart.findOne({userId:userToken._id});
+    const amount = _.find(cart.products,{id: req.params.productId}).amount;
     _.remove(cart.products.id,{id: req.params.productId});
-    await cart.save();
+    product.amount += amount;
+    const task = Fawn.Task();
+    task.save('Cart',cart);
+    task.save('Product',product);
+    task.run();
     res.send(cart);
 }));
 
