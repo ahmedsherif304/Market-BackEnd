@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {User,validate} = require('../models/user');
 const {Cart} = require('../models/cart');
+const {Favourite} = require('../models/favourite');
 const _ = require ('lodash');
 const bcrybt = require('bcrypt');
 const config = require('config');
@@ -23,7 +24,11 @@ router.post('/',exceptionHandling( async (req,res)=>{
     const cart = new Cart ({
         userId:user.id
     });
+    const favourite = new Favourite({
+        userId:user.id
+    });
     task.save('Cart',cart);
+    task.save('Favourite',favourite);
     task.run();
     const token = user.generateAuthToken();
     res.header('x-auth-token',token).send(_.pick(user,['username','email']))
