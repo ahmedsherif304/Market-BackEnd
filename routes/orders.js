@@ -47,7 +47,7 @@ router.delete('/:id',auth,exceptionHandling( async (req,res)=>{
     res.send(true);
 }));
 
-router.put('/state/:id',employee,exceptionHandling( async (req,res)=>{
+router.put('/state/:id',[auth,employee],exceptionHandling( async (req,res)=>{
     const {error} = validateState(req.body);
     if (error)  return res.status(400).send(error.details[0].message);
     const order = await Order.findByIdAndUpdate(req.params.id,{status:req.body.state});
