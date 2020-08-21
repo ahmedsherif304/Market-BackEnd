@@ -10,13 +10,10 @@ const admin = require('../middleware/admin');
 const _ = require ('lodash');
 const shopOwner = require('../middleware/shopOwner');
 const Fawn = require('fawn');
-const mongoose = require('mongoose');
-Fawn.init(mongoose);
-
 
 
 router.get('/',[auth,admin],exceptionHandling( async (req,res)=>{
-  const shops  = await Shop.find({},{_id:0,__v:0}).sort('name');
+  const shops  = await Shop.find({},{__v:0}).sort('name');
   res.send(shops);
 }));
 
@@ -28,19 +25,19 @@ router.get('/',auth,exceptionHandling(async (req,res)=>{
     res.send(shops);
 }));
 
+
 router.get('/:id',auth,exceptionHandling( async (req,res)=>{
     const shop  = await Shop.findById(req.params.id);
-    if (!shop)  return res.status(400).send('the shop id is invalid');
+    if (!shop)  return res.status(400).send('invalid shop id');
     res.send(shop);
 }));
 
 router.get('/:id/products',exceptionHandling(async (req,res)=>{
     const shop  = await Shop.findById(req.params.id);
     if (!shop)  return res.status(400).send('the shop id is invalid');
+    console.log(shop.shopName);
     const products = await Product.find({
-        id:{
-            shopName:shop.name
-        }
+        'id.shopName':  shop.shopName
     });
     res.send(products);
 }));
@@ -59,24 +56,24 @@ router.post('/',auth,exceptionHandling( async (req,res)=>{
      res.send(shop);
 }));
 
-router.delete('/:id',[auth,shopOwner],exceptionHandling( async (req,res)=>{
-    const shop = await Shop.findById(req.params.id);
-    if (!shop)  return res.status(400).send('invalid shop id'); 
-    const products = await Product.find({id:{shopName:shop.name}});
-    let task = new Fawn.Task();
+router.delete('/:shopId',[auth,shopOwner],exceptionHandling( async (req,res)=>{
+    const shop = req.body.shop;
+    const products = await Product.find({id:{shopName:shop.shopName}});
+    const task = Fawn.Task();
     task.remove('Shop',shop)
     task.remove('Product',products)
-    products.forEach(product => {
+    for (const product of products)
+    {
         const rate = await Rate.find({product:{id:product.id}});
         task.remove('Rate',rate);
-    });
+    }
     task.run();
     res.send(true);
 }));
 
 
-router.put('/:id',[auth,shopOwner],exceptionHandling( async (req,res)=>{
-    let shop = await Shop.findOne({name:req.body.shopName});
+router.put('/:shopId',[auth,shopOwner],exceptionHandling( async (req,res)=>{
+    const shop = req.body.shop;
     shop.phone = req.body.phone;
     shop.address = req.body.address;
     await shop.save();

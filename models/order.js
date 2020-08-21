@@ -13,7 +13,7 @@ const orderSchema = new mongoose.Schema({
             ref:'User'
         },
         amount:Number,
-        required:true
+        name:String
     }],
     totalPrice:{
         type:Number,
@@ -24,10 +24,33 @@ const orderSchema = new mongoose.Schema({
         type:String,
         enum:['preparing','shipping','delivering','delivered'],
         default:'preparing'
+    },
+    destination : {
+        type:String,
+        required:true
+    },
+    dateOfOrder : {
+        type:Date,
+        default:Date.now()
+    },
+    phone:{
+        type:String,
+        required:true
     }
 });
 
+function validateOrder (order)
+{
+    const schema ={
+        amounts : Joi.array().items(Joi.number().min(1)).required(),
+        destination:Joi.string().required(),
+        phone:Joi.string().required()
+    }
+    return Joi.validate(order,schema);
+}
 
-const Order = mongoose.model('Order',orderSchema);
+
+const Order = mongoose.model('Order',orderSchema,'Order');
 
 exports.Order = Order;
+exports.validate = validateOrder;

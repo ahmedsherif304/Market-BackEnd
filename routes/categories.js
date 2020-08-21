@@ -10,7 +10,7 @@ const Joi = require('joi');
 
 
 router.get('/',exceptionHandling( async (req,res)=>{
-  const categories  = await Category.find().sort('name');
+  const categories  = await Category.find().sort('categoryName');
   res.send(categories);
 }));
 
@@ -24,7 +24,7 @@ router.get('/categoryId/products',exceptionHandling(async (req,res)=>{
 router.post('/',[auth,admin],exceptionHandling( async (req,res)=>{
      const {error} = validate(req.body);
      if (error) return res.status(400).send(error.details[0].message);
-     const category = new Category(_.pick(req.body,['name']));
+     const category = new Category(_.pick(req.body,['categoryName']));
      await category.save();
      res.send(category);
 }));

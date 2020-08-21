@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 
 const shopSchema = new mongoose.Schema({
-    name: {
+    shopName: {
         type:String,
         minlength:1,
         maxlength:255,
@@ -38,7 +38,7 @@ const shopSchema = new mongoose.Schema({
 });
 
 
-const Shop = mongoose.model('Shop',shopSchema);
+const Shop = mongoose.model('Shop',shopSchema,'Shop');
 
 function validateShop (shop)
 {

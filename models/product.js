@@ -2,9 +2,8 @@ const config = require('config');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const {Category} = require('../models/category');
 
-const idSchema = new mongoose.schema({
+const idSchema = new mongoose.Schema({
     name:{
         type:String,
         minlength:1,
@@ -28,18 +27,15 @@ const productSchema = new mongoose.Schema({
         type:Number,
         default:0,
         min:0,
-        max:5
+        max:5   
     },
     discount:{
-        Type:Number,
+        type:Number,
         min:0,
         max:100,
         default:0
     },
-    category:{
-        type:Category,
-        required:true
-    },
+    category:String,
     image:String,
     details:String,
     amount:{
@@ -50,7 +46,7 @@ const productSchema = new mongoose.Schema({
 });
 
 
-const Product = mongoose.model('Product',productSchema);
+const Product = mongoose.model('Product',productSchema,'Product');
 
 function validateProduct (product)
 {
@@ -61,11 +57,10 @@ function validateProduct (product)
         colors :Joi.array(),
         sizes:Joi.array(),
         discount:Joi.number().min(0).max(100),
-        image:Joi.string().required(),
-        shopName:Joi.string().required(),
+        image:Joi.string(),
         categoryName:Joi.string().required(),
-        amount:Joi.number().min(1),
-        details:Joi.String().require()
+        amount:Joi.number().required().min(1),
+        details:Joi.string().required()
     };
     return  Joi.validate(product,schema) ;
 }
