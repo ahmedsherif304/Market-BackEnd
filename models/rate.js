@@ -1,36 +1,34 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 const rateSchema = new mongoose.Schema({
-    product:{
-        id:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Product'
-        },
-        name:String
+    productId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Product',
+        required:true
     },
     comment:String,
     rate:{
-        type:Numbernew,
+        type:Number,
         min:0,
         max:5
     },
-    user: {
-        id:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'User'
-        },
-        name:String,
+    userId: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        required:true
     }
+    
 });
 
 
-const Rate = mongoose.model('Rate',rateSchema);
+const Rate = mongoose.model('Rate',rateSchema,'Rate');
 
 function validateRate (rate)
 {
     
     const schema = {
         comment : Joi.string().required().min(1),
-        rate : Joi.Number().required().min(0).max(5)
+        rate : Joi.number().required().min(0).max(5)
     };
     return  Joi.validate(rate,schema) ;
 }
