@@ -60,13 +60,13 @@ router.delete('/:shopId',[auth,shopOwner],exceptionHandling( async (req,res)=>{
     const shop = req.body.shop;
     const products = await Product.find({id:{shopName:shop.shopName}});
     const task = Fawn.Task();
-    task.remove('Shop',shop)
-    task.remove('Product',products)
     for (const product of products)
     {
         const rate = await Rate.find({product:{id:product.id}});
         task.remove('Rate',rate);
     }
+    task.remove('Shop',shop)
+    task.remove('Product',products)
     task.run();
     res.send(true);
 }));
