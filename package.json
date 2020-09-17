@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set Market_jwtPrivateKey=Ahmed30499    set saltLength=10   nodemon index.js"
+    "start": "set Market_jwtPrivateKey=Ahmed30499    set salt_Length=10   nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,13 +17,13 @@
     "express": "^4.17.1",
     "fawn": "^2.1.5",
     "joi": "^14.3.1",
-    "joi-password-complexity": "^4.2.0",
-    "joi-phone-number": "^4.1.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.19",
     "mongodb": "^3.6.0",
     "mongoose": "^5.9.20",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.4.11",
+    "randomstring": "^1.1.5",
     "winston": "^2.4.0",
     "winston-mongodb": "^3.0.0"
   }
