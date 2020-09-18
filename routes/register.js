@@ -51,7 +51,7 @@ router.post(
       subject: "verification email",
       text: `please click on this link to verify your email on Market website ${config.get(
         "host"
-      )}/register/emailverification/${randomGeneratedString}`,
+      )}register/emailverification/${randomGeneratedString}`,
     };
     const t = await transporter.sendMail(mailOptions);
     await user.save();
