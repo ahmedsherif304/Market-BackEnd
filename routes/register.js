@@ -39,9 +39,10 @@ router.post(
     // send the email through my email
     const transporter = nodemailer.createTransport({
       service: "gmail",
+      secure: true,
       auth: {
         user: "workteam1999@gmail.com",
-        pass: "work1999",
+        pass: "sdqxaatqpmpzdfsy",
       },
     });
     const mailOptions = {
