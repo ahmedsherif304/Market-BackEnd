@@ -1,7 +1,8 @@
 {
-    "name": "my express app-production",
-    "dbString" : "mongodb://localhost",
-    "mail" :{
-        "host":"prod-mail-server"
-    }
+  "name": "my express app-production",
+  "dbString": "",
+  "host": "",
+  "mail": {
+    "host": "prod-mail-server"
+  }
 }
