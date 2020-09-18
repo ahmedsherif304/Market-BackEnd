@@ -4,7 +4,7 @@
   "password": "",
   "saltLength": "",
   "verificationUrlLength": "10",
-  "dbString": "mongodb://localhost/market",
+  "dbString": "mongodb+srv://Ahmed:0142307673@cluster0.noveo.mongodb.net/Market?retryWrites=true&w=majority",
   "host": "http://localhost:4000",
   "mail": {
     "host": "dev-mail-server"
