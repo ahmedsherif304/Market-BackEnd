@@ -40,15 +40,15 @@ router.post(
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "ahmedsherifelminshawy@gmail.com",
-        pass: "0142307673",
+        user: "workteam1999@gmail.com",
+        pass: "work1999",
       },
     });
     const mailOptions = {
-      from: "ahmedsherifelminshawy@gmail.com",
+      from: "workteam1999@gmail.com",
       to: user.email,
       subject: "verification email",
-      text: `please click on this link to verify your email ${config.get(
+      text: `please click on this link to verify your email on Market website ${config.get(
         "host"
       )}/register/emailverification/${randomGeneratedString}`,
     };

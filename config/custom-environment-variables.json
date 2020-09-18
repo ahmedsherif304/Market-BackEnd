@@ -1,5 +1,6 @@
 {
-    "password":"app_password",
-    "jwtPrivateKey" : "Market_jwtPrivateKey",
-    "saltLength" : "salt_Length"
+  "password": "app_password",
+  "jwtPrivateKey": "Market_jwtPrivateKey",
+  "saltLength": "salt_Length",
+  "verificationUrlLength": "verification_URL_Length"
 }
